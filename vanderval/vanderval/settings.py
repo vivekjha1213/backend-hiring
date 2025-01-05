@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "website",
+    "api"
 ]
 
 MIDDLEWARE = [
@@ -119,3 +120,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = "/static/"
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+# Configure queues
+CELERY_TASK_QUEUES = {
+    'high': {
+        'exchange': 'high',
+        'routing_key': 'high.priority',
+    },
+    'medium': {
+        'exchange': 'medium',
+        'routing_key': 'medium.priority',
+    },
+    'low': {
+        'exchange': 'low',
+        'routing_key': 'low.priority',
+    },
+}
+
+# Accept content types
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

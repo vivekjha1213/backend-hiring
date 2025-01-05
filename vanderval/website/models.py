@@ -33,3 +33,14 @@ class UserRecords(models.Model):
     pincode = models.CharField(max_length=10)
     dob = models.DateField
     is_active = models.BooleanField(default=True)  # do not count for active records if false
+
+class TaskLog(models.Model):
+    task_name = models.CharField(max_length=255)
+    status = models.CharField(max_length=20, choices=[('PENDING', 'Pending'), ('STARTED', 'Started'), ('SUCCESS', 'Success'), ('FAILURE', 'Failure')])
+    result = models.TextField(blank=True, null=True)
+    started_at = models.DateTimeField(auto_now_add=True)
+    finished_at = models.DateTimeField(blank=True, null=True)
+    error_message = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.task_name} - {self.status}"
